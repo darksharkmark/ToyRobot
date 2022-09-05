@@ -25,6 +25,13 @@ enum class Command
 	Report
 };
 
+struct PlaceData
+{
+	int x;
+	int y;
+	Direction direction;
+};
+
 // helper functions for enum <-> string
 static Direction DirectionAsEnum(std::string input)
 {
@@ -116,12 +123,4 @@ static std::string CommandAsString(Command command)
 		break;
 	}
 }
-
-struct PlaceData
-{
-	int x;
-	int y;
-	Direction direction;
-};
-
 }
