@@ -17,6 +17,8 @@ const int gridSize = 5;
 	{{0,0}, {1,0}, {2,0}, {3,0}, {4,0}},
 */
 
+using PlaceDataQueue = std::queue<std::shared_ptr<DataTypes::PlaceData>>;
+
 class Robot
 {
 public:
@@ -39,7 +41,7 @@ private:
 private:
 	// input data queues
 	std::queue<DataTypes::Command> _commandQueue;
-	std::queue<std::shared_ptr<DataTypes::PlaceData>> _placeDataQueue;
+	PlaceDataQueue _placeDataQueue;
 
 	// immutable containers
 	const std::unordered_map<std::string, DataTypes::Command> _commandMap = {
@@ -49,8 +51,6 @@ private:
 		{"RIGHT", DataTypes::Command::Right},
 		{"REPORT", DataTypes::Command::Report},
 	};
-
-
 
 	// state
 	std::pair<int, int> _currentPosition = { 0,0 };
