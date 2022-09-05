@@ -58,22 +58,22 @@ static std::string DirectionAsString(Direction direction)
 	{
 	case Direction::North:
 	{
-		return "North";
+		return "NORTH";
 		break;
 	}
 	case Direction::East:
 	{
-		return "East";
+		return "EAST";
 		break;
 	}
 	case Direction::South:
 	{
-		return "South";
+		return "SOUTH";
 		break;
 	}
 	case Direction::West:
 	{
-		return "West";
+		return "WEST";
 		break;
 	}
 	default:
