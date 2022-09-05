@@ -6,6 +6,17 @@
 
 #include "DataTypes.h"
 
+const int gridSize = 5;
+/*
+*	To help visualise
+* 
+	{{0,4}, {1,4}, {2,4}, {3,4}, {4,4}},
+	{{0,3}, {1,3}, {2,3}, {3,3}, {4,3}},
+	{{0,2}, {1,2}, {2,2}, {3,2}, {4,2}},
+	{{0,1}, {1,1}, {2,1}, {3,1}, {4,1}},
+	{{0,0}, {1,0}, {2,0}, {3,0}, {4,0}},
+*/
+
 class Robot
 {
 public:
@@ -15,9 +26,10 @@ public:
 	void ProcessCommands();
 
 private:
+// helpers
 	std::shared_ptr<DataTypes::PlaceData> CreatePlaceData(std::string input);
 
-	// Command handlers
+// Command handlers
 	void DoPlace();
 	void DoMove();
 	void DoLeft();
@@ -38,13 +50,7 @@ private:
 		{"REPORT", DataTypes::Command::Report},
 	};
 
-	const std::pair<int, int> _grid[5][5] = {
-		{{0,4}, {1,4}, {2,4}, {3,4}, {4,4}},
-		{{0,3}, {1,3}, {2,3}, {3,3}, {4,3}},
-		{{0,2}, {1,2}, {2,2}, {3,2}, {4,2}},
-		{{0,1}, {1,1}, {2,1}, {3,1}, {4,1}},
-		{{0,0}, {1,0}, {2,0}, {3,0}, {4,0}},
-	};
+
 
 	// state
 	std::pair<int, int> _currentPosition = { 0,0 };

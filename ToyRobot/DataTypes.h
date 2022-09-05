@@ -9,10 +9,10 @@ namespace DataTypes
 enum class Direction
 {
 	INVALID,
-	North,
-	West,
-	South,
-	East
+	North = 1,
+	East, // 2
+	South, // 3
+	West // 4
 };
 
 enum class Command
@@ -122,12 +122,6 @@ struct PlaceData
 	int x;
 	int y;
 	Direction direction;
-	void Print()
-	{
-		std::cout << "X: " << x << ", ";
-		std::cout << "Y: " << y << ", ";
-		std::cout << "F: " << DirectionAsString(direction) << std::endl;
-	}
 };
 
 }

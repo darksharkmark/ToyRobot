@@ -55,6 +55,11 @@ bool Robot::Initialise(int argc, char* argv[])
 					{
 						_placeDataQueue.push(placeData);
 					}
+					else
+					{
+						std::cerr << "Error - Invalid place data: " << nextCommand << std::endl;
+						return false;
+					}
 				}
 			}
 		}
@@ -67,36 +72,7 @@ bool Robot::Initialise(int argc, char* argv[])
 	return true;
 }
 
-std::shared_ptr<PlaceData> Robot::CreatePlaceData(std::string input)
-{
-	// must be at 8 or 9 chars, single digit co-ordindates + commas + EAST/WEST | NORTH/SOUTH
-	if (input.size() < 7 || input.size() > 9)
-	{
-		return nullptr;
-	}
 
-	auto directionString = input.substr(4, input.size() - 4);
-	Direction direction = DirectionAsEnum(directionString);
-	if (direction == Direction::INVALID)
-	{
-		return nullptr;
-	}
-
-	// convert char number to int
-	int x = static_cast<int>(input.at(0) - 48);
-	int y = static_cast<int>(input.at(2) - 48);
-	if ((x < 0 || x > 5) || (y < 0 || y > 5))
-	{
-		return nullptr;
-	}
-
-	std::shared_ptr<PlaceData> placeData = std::make_shared<PlaceData>();
-	placeData->x = x;
-	placeData->y = y;
-	placeData->direction = direction;
-
-	return placeData;
-}
 /*
 * TODO:
 	Place,
@@ -139,6 +115,39 @@ void Robot::ProcessCommands()
 	}
 }
 
+std::shared_ptr<PlaceData> Robot::CreatePlaceData(std::string input)
+{
+	// must be at 8 or 9 chars, single digit co-ordindates + commas + EAST/WEST | NORTH/SOUTH
+	if (input.size() < 7 || input.size() > 9)
+	{
+		return nullptr;
+	}
+
+	auto directionString = input.substr(4, input.size() - 4);
+	Direction direction = DirectionAsEnum(directionString);
+	if (direction == Direction::INVALID)
+	{
+		return nullptr;
+	}
+
+	// convert char number to int
+	int x = static_cast<int>(input.at(0) - 48);
+	int y = static_cast<int>(input.at(2) - 48);
+	if ((x < 0 || x > gridSize - 1) || (y < 0 || y > gridSize - 1))
+	{
+		return nullptr;
+	}
+
+	std::shared_ptr<PlaceData> placeData = std::make_shared<PlaceData>();
+	placeData->x = x;
+	placeData->y = y;
+	placeData->direction = direction;
+
+	return placeData;
+}
+
+
+
 // Command handlers
 void Robot::DoPlace()
 {
@@ -153,22 +162,81 @@ void Robot::DoPlace()
 	}
 }
 
+bool ValidateMove(int position)
+{
+	return position > -1 || position < gridSize;
+}
+
 void Robot::DoMove()
 {
-
+	switch (_currentDirection)
+	{
+		case Direction::North:
+		{
+			int newPosition = _currentPosition.second + 1;
+			if (ValidateMove(newPosition)) 
+			{ 
+				_currentPosition.second = newPosition;	
+			}
+			break;
+		}
+		case Direction::West:
+		{
+			int newPosition = _currentPosition.first + 1;
+			if (ValidateMove(newPosition))
+			{
+				_currentPosition.first =  newPosition;
+			}
+			break;
+		}
+		case Direction::South:
+		{
+			int newPosition = _currentPosition.second - 1;
+			if (ValidateMove(newPosition))
+			{
+				_currentPosition.second = newPosition;
+			}
+			break;
+		}
+		case Direction::East:
+		{
+			int newPosition = _currentPosition.first - 1;
+			if (ValidateMove(newPosition))
+			{
+				_currentPosition.first = newPosition;
+			}
+			break;
+		}
+	default:
+		break;
+	}
 }
 
 void Robot::DoLeft()
 {
+	int directionAsInt = static_cast<int>(_currentDirection);
+	if (--directionAsInt < 1)
+	{
+		directionAsInt = 4;
+	}
 
+	_currentDirection = static_cast<Direction>(directionAsInt);
 }
 
 void Robot::DoRight()
 {
+	int directionAsInt = static_cast<int>(_currentDirection);
+	if (++directionAsInt > 4)
+	{
+		directionAsInt = 1;
+	}
 
+	_currentDirection = static_cast<Direction>(directionAsInt);
 }
 
 void Robot::DoReport()
 {
-	std::cout << _currentPosition.first << "," << "," << _currentPosition.second << DataTypes::DirectionAsString(_currentDirection) << std::endl;
+	std::cout << _currentPosition.first << "," << _currentPosition.second << "," << DataTypes::DirectionAsString(_currentDirection) << std::endl;
 }
+
+
