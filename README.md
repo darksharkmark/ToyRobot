@@ -1,6 +1,9 @@
 # ToyRobot
 The application is a simulation of a toy robot moving on a square table top, of dimensions 5 units x 5 units. 
 
+## Building the Application
+Visual Studio 2019
+
 ## Usage
 - Input is processed via commandline e.g.
   - ./ToyRobot.exe PLACE 1,2,NORTH 
