@@ -1,9 +1,9 @@
 #pragma once
 
-#include <utility> // std::pair
+#include <utility> // pair
 #include <queue>
 #include <unordered_map>
-#include <memory>
+#include <memory> // shared_ptr
 
 namespace DataTypes
 {
@@ -43,20 +43,24 @@ namespace DataTypes
 	{{0,1}, {1,1}, {2,1}, {3,1}, {4,1}},
 	{{0,0}, {1,0}, {2,0}, {3,0}, {4,0}},
 */
+// constants
 const int gridSize = 5;
+
+// typedefs
+using CommandQueue = std::queue<DataTypes::Command>;
 using PlaceDataQueue = std::queue<std::shared_ptr<DataTypes::PlaceData>>;
+using CommandMap = const std::unordered_map<std::string, DataTypes::Command>;
+using DirectionMap = const std::unordered_map<std::string, DataTypes::Direction>;
 
 class Robot
 {
 public:
-	Robot();
-	~Robot();
 	bool Initialise(const std::vector<std::string>& commandLineArgs);
 	void ProcessCommands();
 
 private:
 // helpers
-	std::shared_ptr<DataTypes::PlaceData> CreatePlaceData(std::string input);
+	std::shared_ptr<DataTypes::PlaceData> CreatePlaceData(const std::string& input);
 	std::string GetDirectionAsString(DataTypes::Direction direction);
 	std::string GetCommandAsString(DataTypes::Command command);
 
@@ -69,11 +73,11 @@ private:
 
 private:
 	// input data queues
-	std::queue<DataTypes::Command> _commandQueue;
+	CommandQueue _commandQueue;
 	PlaceDataQueue _placeDataQueue;
 
 	// immutable containers
-	const std::unordered_map<std::string, DataTypes::Command> _commandMap = {
+	CommandMap _commandMap = {
 		{"PLACE", DataTypes::Command::Place},
 		{"MOVE", DataTypes::Command::Move},
 		{"LEFT", DataTypes::Command::Left},
@@ -82,7 +86,7 @@ private:
 	};
 
 	// immutable containers
-	const std::unordered_map<std::string, DataTypes::Direction> _directionMap = {
+	DirectionMap _directionMap = {
 		{"NORTH", DataTypes::Direction::North},
 		{"EAST", DataTypes::Direction::East},
 		{"SOUTH", DataTypes::Direction::South},
@@ -90,7 +94,7 @@ private:
 	};
 
 	// state
-	std::pair<int, int> _currentPosition = { 0,0 };
-	DataTypes::Direction _currentDirection = DataTypes::Direction::INVALID;
+	std::pair<int, int> _currentPosition { 0,0 };
+	DataTypes::Direction _currentDirection { DataTypes::Direction::INVALID };
 };
 

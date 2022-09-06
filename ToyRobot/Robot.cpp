@@ -4,16 +4,6 @@
 #include <type_traits>
 #include <iostream>
 
-using namespace DataTypes;
-
-Robot::Robot()
-{
-}
-
-Robot::~Robot()
-{
-}
-
 bool Robot::Initialise(const std::vector<std::string>& commandLineArgs)
 {
 	// must have at least 3 args to start
@@ -35,11 +25,11 @@ bool Robot::Initialise(const std::vector<std::string>& commandLineArgs)
 		try
 		{
 			// catch below will handle invalid input
-			Command command = _commandMap.at(*iter);
+			DataTypes::Command command = _commandMap.at(*iter);
 
 			// special case for PLACE
 			// PLACE needs to have co-ordinates & direction after it
-			if (command == Command::Place)
+			if (command == DataTypes::Command::Place)
 			{
 				if(iter != commandLineArgs.end() - 1)
 				{
@@ -79,37 +69,51 @@ void Robot::ProcessCommands()
 {
 	while (!_commandQueue.empty())
 	{
-		Command currentCommand = _commandQueue.front();
+		DataTypes::Command currentCommand = _commandQueue.front();
 
 		switch (currentCommand)
 		{
-		case DataTypes::Command::INVALID:
-			std::cerr << "Error - Invalid Command on Processing" << std::endl;
-			break;
-		case DataTypes::Command::Place:
-			DoPlace();
-			break;
-		case DataTypes::Command::Move:
-			DoMove();
-			break;
-		case DataTypes::Command::Left:
-			DoLeft();
-			break;
-		case DataTypes::Command::Right:
-			DoRight();
-			break;
-		case DataTypes::Command::Report:
-			DoReport();
-			break;
-		default:
-			break;
+			case DataTypes::Command::Place:
+			{
+				DoPlace();
+				break;
+			}
+			case DataTypes::Command::Move:
+			{
+				DoMove();
+				break;
+			}
+			case DataTypes::Command::Left:
+			{
+				DoLeft();
+				break;
+			}
+			case DataTypes::Command::Right:
+			{
+				DoRight();
+				break;
+			}
+			case DataTypes::Command::Report:
+			{
+				DoReport();
+				break;
+			}
+			case DataTypes::Command::INVALID:
+			{
+				std::cerr << "Error - Invalid Command on Processing" << std::endl;
+				break;
+			}
+			default:
+			{
+				break;
+			}
 		}
 
 		_commandQueue.pop();
 	}
 }
 
-std::shared_ptr<PlaceData> Robot::CreatePlaceData(std::string input)
+std::shared_ptr<DataTypes::PlaceData> Robot::CreatePlaceData(const std::string& input)
 {
 	// must be at 8 or 9 chars, single digit co-ordindates + commas + EAST/WEST | NORTH/SOUTH
 	if (input.size() < 7 || input.size() > 9)
@@ -118,7 +122,7 @@ std::shared_ptr<PlaceData> Robot::CreatePlaceData(std::string input)
 	}
 
 	std::string directionString = input.substr(4, input.size() - 4);
-	Direction direction = Direction::INVALID;
+	DataTypes::Direction direction = DataTypes::Direction::INVALID;
 	try
 	{
 		direction = _directionMap.at(directionString);
@@ -137,8 +141,37 @@ std::shared_ptr<PlaceData> Robot::CreatePlaceData(std::string input)
 		return nullptr;
 	}
 
-	return std::make_shared<PlaceData>(PlaceData{ x, y, direction });
+	return std::make_shared<DataTypes::PlaceData>(DataTypes::PlaceData{ x, y, direction });
 }
+
+std::string Robot::GetDirectionAsString(DataTypes::Direction direction)
+{
+	for (auto it = _directionMap.begin(); it != _directionMap.end(); ++it)
+	{
+		if (it->second == direction)
+		{
+			return it->first;
+		}
+	}
+
+	std::cerr << "Error - could not convert direction to string: " << static_cast<int>(direction) << std::endl;
+	return "";
+}
+
+std::string Robot::GetCommandAsString(DataTypes::Command command)
+{
+	for (auto it = _commandMap.begin(); it != _commandMap.end(); ++it)
+	{
+		if (it->second == command)
+		{
+			return it->first;
+		}
+	}
+
+	std::cerr << "Error - could not convert command to string: " << static_cast<int>(command) << std::endl;
+	return "";
+}
+
 
 // Command handlers
 void Robot::DoPlace()
@@ -167,7 +200,7 @@ void Robot::DoMove()
 {
 	switch (_currentDirection)
 	{
-		case Direction::North:
+		case DataTypes::Direction::North:
 		{
 			int newPosition = _currentPosition.second + 1;
 			if (ValidateMove(newPosition)) 
@@ -176,7 +209,7 @@ void Robot::DoMove()
 			}
 			break;
 		}
-		case Direction::West:
+		case DataTypes::Direction::West:
 		{
 			int newPosition = _currentPosition.first + 1;
 			if (ValidateMove(newPosition))
@@ -185,7 +218,7 @@ void Robot::DoMove()
 			}
 			break;
 		}
-		case Direction::South:
+		case DataTypes::Direction::South:
 		{
 			int newPosition = _currentPosition.second - 1;
 			if (ValidateMove(newPosition))
@@ -194,7 +227,7 @@ void Robot::DoMove()
 			}
 			break;
 		}
-		case Direction::East:
+		case DataTypes::Direction::East:
 		{
 			int newPosition = _currentPosition.first - 1;
 			if (ValidateMove(newPosition))
@@ -235,32 +268,5 @@ void Robot::DoReport()
 	std::cout << _currentPosition.first << "," << _currentPosition.second << "," << GetDirectionAsString(_currentDirection) << std::endl;
 }
 
-std::string Robot::GetDirectionAsString(DataTypes::Direction direction)
-{
-	for (auto it = _directionMap.begin(); it != _directionMap.end(); ++it)
-	{
-		if (it->second == direction)
-		{
-			return it->first;
-		}
-	}
-
-	std::cerr << "Error - could not convert direction to string: " << static_cast<int>(direction) << std::endl;
-	return "";
-}
-
-std::string Robot::GetCommandAsString(DataTypes::Command command)
-{
-	for (auto it = _commandMap.begin(); it != _commandMap.end(); ++it)
-	{
-		if (it->second == command)
-		{
-			return it->first;
-		}
-	}
-
-	std::cerr << "Error - could not convert command to string: " << static_cast<int>(command) << std::endl;
-	return "";
-}
 
 

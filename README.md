@@ -17,3 +17,5 @@ Visual Studio 2019
 - Focusing on code readability over effeciency
 - makes use of the std library where appropriate
 
+## Tests
+using Gtest Framework
