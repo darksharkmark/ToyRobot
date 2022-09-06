@@ -1,6 +1,8 @@
-#include <memory>
 #include "Robot.h"
+
 #include <cstdlib>
+#include <type_traits>
+#include <iostream>
 
 using namespace DataTypes;
 
@@ -115,10 +117,15 @@ std::shared_ptr<PlaceData> Robot::CreatePlaceData(std::string input)
 		return nullptr;
 	}
 
-	auto directionString = input.substr(4, input.size() - 4);
-	Direction direction = DirectionAsEnum(directionString);
-	if (direction == Direction::INVALID)
+	std::string directionString = input.substr(4, input.size() - 4);
+	Direction direction = Direction::INVALID;
+	try
 	{
+		direction = _directionMap.at(directionString);
+	}
+	catch (std::out_of_range e)
+	{
+		std::cerr << "Error - invalid direction " << directionString << std::endl;
 		return nullptr;
 	}
 
@@ -203,29 +210,57 @@ void Robot::DoMove()
 
 void Robot::DoLeft()
 {
-	int directionAsInt = static_cast<int>(_currentDirection);
-	if (--directionAsInt < 1)
+	int directon = static_cast<int>(_currentDirection);
+	if (--directon < 1)
 	{
-		directionAsInt = 4;
+		directon = 4;
 	}
 
-	_currentDirection = static_cast<Direction>(directionAsInt);
+	_currentDirection = static_cast<DataTypes::Direction>(directon);
 }
 
 void Robot::DoRight()
 {
-	int directionAsInt = static_cast<int>(_currentDirection);
-	if (++directionAsInt > 4)
+	int directon = static_cast<int>(_currentDirection);
+	if (++directon > 4)
 	{
-		directionAsInt = 1;
+		directon = 1;
 	}
 
-	_currentDirection = static_cast<Direction>(directionAsInt);
+	_currentDirection = static_cast<DataTypes::Direction>(directon);
 }
 
 void Robot::DoReport()
 {
-	std::cout << _currentPosition.first << "," << _currentPosition.second << "," << DataTypes::DirectionAsString(_currentDirection) << std::endl;
+	std::cout << _currentPosition.first << "," << _currentPosition.second << "," << GetDirectionAsString(_currentDirection) << std::endl;
+}
+
+std::string Robot::GetDirectionAsString(DataTypes::Direction direction)
+{
+	for (auto it = _directionMap.begin(); it != _directionMap.end(); ++it)
+	{
+		if (it->second == direction)
+		{
+			return it->first;
+		}
+	}
+
+	std::cerr << "Error - could not convert direction to string: " << static_cast<int>(direction) << std::endl;
+	return "";
+}
+
+std::string Robot::GetCommandAsString(DataTypes::Command command)
+{
+	for (auto it = _commandMap.begin(); it != _commandMap.end(); ++it)
+	{
+		if (it->second == command)
+		{
+			return it->first;
+		}
+	}
+
+	std::cerr << "Error - could not convert command to string: " << static_cast<int>(command) << std::endl;
+	return "";
 }
 
 

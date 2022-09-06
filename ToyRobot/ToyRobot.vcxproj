@@ -143,7 +143,6 @@
     <ClCompile Include="Robot.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataTypes.h" />
     <ClInclude Include="Robot.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

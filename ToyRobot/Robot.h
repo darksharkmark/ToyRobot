@@ -3,10 +3,37 @@
 #include <utility> // std::pair
 #include <queue>
 #include <unordered_map>
+#include <memory>
 
-#include "DataTypes.h"
+namespace DataTypes
+{
+	enum class Direction : int
+	{
+		INVALID = 0,
+		North = 1,
+		East = 2,
+		South = 3,
+		West = 4
+	};
 
-const int gridSize = 5;
+	enum class Command
+	{
+		INVALID,
+		Place,
+		Move,
+		Left,
+		Right,
+		Report
+	};
+
+	struct PlaceData
+	{
+		int x;
+		int y;
+		Direction direction;
+	};
+}
+
 /*
 *	To help visualise
 * 
@@ -16,7 +43,7 @@ const int gridSize = 5;
 	{{0,1}, {1,1}, {2,1}, {3,1}, {4,1}},
 	{{0,0}, {1,0}, {2,0}, {3,0}, {4,0}},
 */
-
+const int gridSize = 5;
 using PlaceDataQueue = std::queue<std::shared_ptr<DataTypes::PlaceData>>;
 
 class Robot
@@ -30,6 +57,8 @@ public:
 private:
 // helpers
 	std::shared_ptr<DataTypes::PlaceData> CreatePlaceData(std::string input);
+	std::string GetDirectionAsString(DataTypes::Direction direction);
+	std::string GetCommandAsString(DataTypes::Command command);
 
 // Command handlers
 	void DoPlace();
@@ -50,6 +79,14 @@ private:
 		{"LEFT", DataTypes::Command::Left},
 		{"RIGHT", DataTypes::Command::Right},
 		{"REPORT", DataTypes::Command::Report},
+	};
+
+	// immutable containers
+	const std::unordered_map<std::string, DataTypes::Direction> _directionMap = {
+		{"NORTH", DataTypes::Direction::North},
+		{"EAST", DataTypes::Direction::East},
+		{"SOUTH", DataTypes::Direction::South},
+		{"WEST", DataTypes::Direction::West},
 	};
 
 	// state
