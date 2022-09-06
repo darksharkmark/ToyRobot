@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 std::vector<std::string> formatCommandLineArgs(int argc, char* argv[])
 {
 	std::vector<std::string> commandLineArgs;
-	commandLineArgs.reserve(argc);
+	commandLineArgs.reserve(argc - 1);
 
 	for (int i = 1; i < argc; ++i)
 	{
