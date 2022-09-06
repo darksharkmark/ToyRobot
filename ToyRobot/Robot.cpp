@@ -1,5 +1,6 @@
 #include <memory>
 #include "Robot.h"
+#include <cstdlib>
 
 using namespace DataTypes;
 
@@ -11,45 +12,37 @@ Robot::~Robot()
 {
 }
 
-bool Robot::Initialise(int argc, char* argv[])
+bool Robot::Initialise(const std::vector<std::string>& commandLineArgs)
 {
 	// must have at least 3 args to start
 	// (1) exe name
 	// (2) PLACE
 	// (3) X,Y,[NORTH | EAST | SOUTH | WEST]
 	{
-		if (argc < 3)
-		{
-			std::cerr << "Error - no input found" << std::endl;
-			return false;
-		}
-	
-		std::string firstCommand = argv[1];
+		std::string firstCommand = commandLineArgs.front();
 		if (firstCommand != "PLACE")
 		{
-			std::cerr << "Error - First command is: " << argv[1] << std::endl;
+			std::cerr << "Error - First command is: " << firstCommand << std::endl;
 			std::cerr << "First command must be PLACE" << std::endl;
 			return false;
 		}
 	}
 
-	//std::cout << "args: " << std::endl;
-	for (int i = 1; i < argc; ++i)
+	for (auto iter = commandLineArgs.begin(); iter != commandLineArgs.end(); iter++)
 	{
-		std::string rawCommand = argv[i];
 		try
 		{
 			// catch below will handle invalid input
-			Command command = _commandMap.at(rawCommand);
-			_commandQueue.push(command);
+			Command command = _commandMap.at(*iter);
 
-			// not ideal but cant think of a better way, TODO: cleanup 
+			// special case for PLACE
+			// PLACE needs to have co-ordinates & direction after it
 			if (command == Command::Place)
 			{
-				if (i < (argc - 1))
+				if(iter != commandLineArgs.end() - 1)
 				{
 					// should be X, Y, [NORTH | EAST | SOUTH | WEST]
-					std::string nextCommand = argv[++i];
+					std::string nextCommand = *(++iter);
 					auto placeData = CreatePlaceData(nextCommand);
 					if (placeData)
 					{
@@ -60,27 +53,26 @@ bool Robot::Initialise(int argc, char* argv[])
 						std::cerr << "Error - Invalid place data: " << nextCommand << std::endl;
 						return false;
 					}
+
+					// only push PLACE if we have valid "place data" i.e. co-ordinates & direction
+					_commandQueue.push(command);
 				}
+			}
+			else
+			{
+				// all other commands push without other args
+				_commandQueue.push(command);
 			}
 		}
 		catch (std::out_of_range e)
 		{
-			std::cerr << "Error - no command " << rawCommand << std::endl;
+			std::cerr << "Error - invalid command " << *iter << std::endl;
 		}
 	}
 
 	return true;
 }
 
-
-/*
-* TODO:
-	Place,
-	Move,
-	Left,
-	Right,
-	Report
-*/
 void Robot::ProcessCommands()
 {
 	while (!_commandQueue.empty())
@@ -131,22 +123,15 @@ std::shared_ptr<PlaceData> Robot::CreatePlaceData(std::string input)
 	}
 
 	// convert char number to int
-	int x = static_cast<int>(input.at(0) - 48);
-	int y = static_cast<int>(input.at(2) - 48);
+	int x = static_cast<int>(input.at(0) - '0');
+	int y = static_cast<int>(input.at(2) - '0');
 	if ((x < 0 || x > gridSize - 1) || (y < 0 || y > gridSize - 1))
 	{
 		return nullptr;
 	}
 
-	std::shared_ptr<PlaceData> placeData = std::make_shared<PlaceData>();
-	placeData->x = x;
-	placeData->y = y;
-	placeData->direction = direction;
-
-	return placeData;
+	return std::make_shared<PlaceData>(PlaceData{ x, y, direction });
 }
-
-
 
 // Command handlers
 void Robot::DoPlace()
@@ -160,11 +145,15 @@ void Robot::DoPlace()
 
 		_placeDataQueue.pop();
 	}
+	else
+	{
+		std::cerr << "Error - We should have place data but we dont?" << std::endl;
+	}
 }
 
 bool ValidateMove(int position)
 {
-	return position > -1 || position < gridSize;
+	return position > -1 && position < gridSize;
 }
 
 void Robot::DoMove()

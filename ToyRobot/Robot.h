@@ -24,7 +24,7 @@ class Robot
 public:
 	Robot();
 	~Robot();
-	bool Initialise(int argc, char* argv[]);
+	bool Initialise(const std::vector<std::string>& commandLineArgs);
 	void ProcessCommands();
 
 private:
