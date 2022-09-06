@@ -6,14 +6,6 @@
 
 bool Robot::Initialise(const std::vector<std::string>& commandLineArgs)
 {
-	//const std::string& firstCommand = commandLineArgs.front();
-	//if (firstCommand != "PLACE")
-	//{
-	//	std::cerr << "Error - First command is: " << firstCommand << std::endl;
-	//	std::cerr << "First command must be PLACE" << std::endl;
-	//	return false;
-	//}
-
 	for (auto iter = commandLineArgs.begin(); iter != commandLineArgs.end(); iter++)
 	{
 		DataTypes::Command command = DataTypes::Command::INVALID;
