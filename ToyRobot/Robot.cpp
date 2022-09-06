@@ -184,7 +184,7 @@ void Robot::DoMove()
 	{
 		case DataTypes::Direction::North:
 		{
-			int newPosition = _currentPosition.second + 1;
+			const int newPosition = _currentPosition.second + 1;
 			if (ValidateMove(newPosition)) 
 			{ 
 				_currentPosition.second = newPosition;	
@@ -193,7 +193,7 @@ void Robot::DoMove()
 		}
 		case DataTypes::Direction::West:
 		{
-			int newPosition = _currentPosition.first + 1;
+			const int newPosition = _currentPosition.first + 1;
 			if (ValidateMove(newPosition))
 			{
 				_currentPosition.first =  newPosition;
@@ -202,7 +202,7 @@ void Robot::DoMove()
 		}
 		case DataTypes::Direction::South:
 		{
-			int newPosition = _currentPosition.second - 1;
+			const int newPosition = _currentPosition.second - 1;
 			if (ValidateMove(newPosition))
 			{
 				_currentPosition.second = newPosition;
@@ -211,7 +211,7 @@ void Robot::DoMove()
 		}
 		case DataTypes::Direction::East:
 		{
-			int newPosition = _currentPosition.first - 1;
+			const int newPosition = _currentPosition.first - 1;
 			if (ValidateMove(newPosition))
 			{
 				_currentPosition.first = newPosition;
@@ -225,24 +225,24 @@ void Robot::DoMove()
 
 void Robot::DoLeft()
 {
-	int directon = static_cast<int>(_currentDirection);
-	if (--directon < 1)
+	int direction = static_cast<int>(_currentDirection);
+	if (--direction < 1)
 	{
-		directon = 4;
+		direction = 4;
 	}
 
-	_currentDirection = static_cast<DataTypes::Direction>(directon);
+	_currentDirection = static_cast<DataTypes::Direction>(direction);
 }
 
 void Robot::DoRight()
 {
-	int directon = static_cast<int>(_currentDirection);
-	if (++directon > 4)
+	int direction = static_cast<int>(_currentDirection);
+	if (++direction > 4)
 	{
-		directon = 1;
+		direction = 1;
 	}
 
-	_currentDirection = static_cast<DataTypes::Direction>(directon);
+	_currentDirection = static_cast<DataTypes::Direction>(direction);
 }
 
 void Robot::DoReport()
