@@ -246,6 +246,3 @@ void Robot::DoReport()
 {
 	std::cout << _currentPosition.first << "," << _currentPosition.second << "," << GetDirectionAsString(_currentDirection) << std::endl;
 }
-
-
-

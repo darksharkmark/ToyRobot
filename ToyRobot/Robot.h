@@ -83,8 +83,6 @@ private:
 		{"RIGHT", DataTypes::Command::Right},
 		{"REPORT", DataTypes::Command::Report},
 	};
-
-	// immutable containers
 	DirectionMap _directionMap = {
 		{"NORTH", DataTypes::Direction::North},
 		{"EAST", DataTypes::Direction::East},
