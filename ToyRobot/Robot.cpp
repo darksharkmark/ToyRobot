@@ -6,13 +6,13 @@
 
 bool Robot::Initialise(const std::vector<std::string>& commandLineArgs)
 {
-	const std::string& firstCommand = commandLineArgs.front();
-	if (firstCommand != "PLACE")
-	{
-		std::cerr << "Error - First command is: " << firstCommand << std::endl;
-		std::cerr << "First command must be PLACE" << std::endl;
-		return false;
-	}
+	//const std::string& firstCommand = commandLineArgs.front();
+	//if (firstCommand != "PLACE")
+	//{
+	//	std::cerr << "Error - First command is: " << firstCommand << std::endl;
+	//	std::cerr << "First command must be PLACE" << std::endl;
+	//	return false;
+	//}
 
 	for (auto iter = commandLineArgs.begin(); iter != commandLineArgs.end(); iter++)
 	{
@@ -64,6 +64,12 @@ void Robot::ProcessCommands()
 	while (!_commandQueue.empty())
 	{
 		DataTypes::Command currentCommand = _commandQueue.front();
+
+		if (!isPlaced && currentCommand != DataTypes::Command::Place)
+		{
+			_commandQueue.pop();
+			continue;
+		}
 
 		switch (currentCommand)
 		{
@@ -138,7 +144,7 @@ std::shared_ptr<DataTypes::PlaceData> Robot::CreatePlaceData(const std::string& 
 	return std::make_shared<DataTypes::PlaceData>(DataTypes::PlaceData{ x, y, direction });
 }
 
-std::string Robot::GetDirectionAsString(DataTypes::Direction direction)
+const std::string& Robot::GetDirectionAsString(DataTypes::Direction direction) const
 {
 	for (auto it = _directionMap.begin(); it != _directionMap.end(); ++it)
 	{
@@ -157,6 +163,11 @@ void Robot::DoPlace()
 {
 	if (!_placeDataQueue.empty())
 	{
+		if (!isPlaced)
+		{
+			isPlaced = true;
+		}
+
 		const auto& currentPlaceData = _placeDataQueue.front();
 
 		_currentPosition = { currentPlaceData->x, currentPlaceData->y };
@@ -170,7 +181,7 @@ void Robot::DoPlace()
 	}
 }
 
-bool ValidateMove(int position)
+const bool Robot::ValidateMove(int position) const
 {
 	return position > -1 && position < gridSize;
 }

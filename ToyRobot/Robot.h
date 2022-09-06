@@ -51,6 +51,7 @@ using CommandQueue = std::queue<DataTypes::Command>;
 using PlaceDataQueue = std::queue<std::shared_ptr<DataTypes::PlaceData>>;
 using CommandMap = const std::unordered_map<std::string, DataTypes::Command>;
 using DirectionMap = const std::unordered_map<std::string, DataTypes::Direction>;
+using Coorindates = std::pair<int, int>;
 
 class Robot
 {
@@ -61,7 +62,8 @@ public:
 private:
 // helpers
 	std::shared_ptr<DataTypes::PlaceData> CreatePlaceData(const std::string& input);
-	std::string GetDirectionAsString(DataTypes::Direction direction);
+	const std::string& GetDirectionAsString(DataTypes::Direction direction) const;
+	const bool ValidateMove(int position) const;
 
 // Command handlers
 	void DoPlace();
@@ -70,28 +72,28 @@ private:
 	void DoRight();
 	void DoReport();
 
-private:
-	// input data queues
+// input data queues
 	CommandQueue _commandQueue;
 	PlaceDataQueue _placeDataQueue;
 
-	// immutable containers
-	CommandMap _commandMap = {
+// immutable containers
+	CommandMap _commandMap {
 		{"PLACE", DataTypes::Command::Place},
 		{"MOVE", DataTypes::Command::Move},
 		{"LEFT", DataTypes::Command::Left},
 		{"RIGHT", DataTypes::Command::Right},
 		{"REPORT", DataTypes::Command::Report},
 	};
-	DirectionMap _directionMap = {
+	DirectionMap _directionMap {
 		{"NORTH", DataTypes::Direction::North},
 		{"EAST", DataTypes::Direction::East},
 		{"SOUTH", DataTypes::Direction::South},
 		{"WEST", DataTypes::Direction::West},
 	};
 
-	// state
-	std::pair<int, int> _currentPosition { 0,0 };
+// state
+	Coorindates _currentPosition { 0,0 };
 	DataTypes::Direction _currentDirection { DataTypes::Direction::INVALID };
+	bool isPlaced;
 };
 
