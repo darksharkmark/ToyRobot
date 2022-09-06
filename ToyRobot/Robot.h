@@ -62,7 +62,6 @@ private:
 // helpers
 	std::shared_ptr<DataTypes::PlaceData> CreatePlaceData(const std::string& input);
 	std::string GetDirectionAsString(DataTypes::Direction direction);
-	std::string GetCommandAsString(DataTypes::Command command);
 
 // Command handlers
 	void DoPlace();

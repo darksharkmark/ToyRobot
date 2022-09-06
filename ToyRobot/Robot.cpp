@@ -152,21 +152,6 @@ std::string Robot::GetDirectionAsString(DataTypes::Direction direction)
 	return "";
 }
 
-std::string Robot::GetCommandAsString(DataTypes::Command command)
-{
-	for (auto it = _commandMap.begin(); it != _commandMap.end(); ++it)
-	{
-		if (it->second == command)
-		{
-			return it->first;
-		}
-	}
-
-	std::cerr << "Error - could not convert command to string: " << static_cast<int>(command) << std::endl;
-	return "";
-}
-
-
 // Command handlers
 void Robot::DoPlace()
 {

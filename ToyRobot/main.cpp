@@ -16,7 +16,6 @@
 */
 
 #include "Robot.h"
-
 #include <vector>
 
 std::vector<std::string> formatCommandLineArgs(int argc, char* argv[]);
