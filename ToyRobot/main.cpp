@@ -23,7 +23,7 @@ std::vector<std::string> formatCommandLineArgs(int argc, char* argv[]);
 
 int main(int argc, char* argv[])
 {
-	std::vector<std::string> commandLineArgs = formatCommandLineArgs(argc, argv);
+	const std::vector<std::string>& commandLineArgs = formatCommandLineArgs(argc, argv);
 
 	Robot robot;
 	if (!robot.Initialise(commandLineArgs))

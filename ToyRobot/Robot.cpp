@@ -6,59 +6,53 @@
 
 bool Robot::Initialise(const std::vector<std::string>& commandLineArgs)
 {
-	// must have at least 3 args to start
-	// (1) exe name
-	// (2) PLACE
-	// (3) X,Y,[NORTH | EAST | SOUTH | WEST]
+	const std::string& firstCommand = commandLineArgs.front();
+	if (firstCommand != "PLACE")
 	{
-		std::string firstCommand = commandLineArgs.front();
-		if (firstCommand != "PLACE")
-		{
-			std::cerr << "Error - First command is: " << firstCommand << std::endl;
-			std::cerr << "First command must be PLACE" << std::endl;
-			return false;
-		}
+		std::cerr << "Error - First command is: " << firstCommand << std::endl;
+		std::cerr << "First command must be PLACE" << std::endl;
+		return false;
 	}
 
 	for (auto iter = commandLineArgs.begin(); iter != commandLineArgs.end(); iter++)
 	{
+		DataTypes::Command command = DataTypes::Command::INVALID;
 		try
 		{
-			// catch below will handle invalid input
-			DataTypes::Command command = _commandMap.at(*iter);
-
-			// special case for PLACE
-			// PLACE needs to have co-ordinates & direction after it
-			if (command == DataTypes::Command::Place)
-			{
-				if(iter != commandLineArgs.end() - 1)
-				{
-					// should be X, Y, [NORTH | EAST | SOUTH | WEST]
-					std::string nextCommand = *(++iter);
-					auto placeData = CreatePlaceData(nextCommand);
-					if (placeData)
-					{
-						_placeDataQueue.push(placeData);
-					}
-					else
-					{
-						std::cerr << "Error - Invalid place data: " << nextCommand << std::endl;
-						return false;
-					}
-
-					// only push PLACE if we have valid "place data" i.e. co-ordinates & direction
-					_commandQueue.push(command);
-				}
-			}
-			else
-			{
-				// all other commands push without other args
-				_commandQueue.push(command);
-			}
+			command = _commandMap.at(*iter);
 		}
 		catch (std::out_of_range e)
 		{
 			std::cerr << "Error - invalid command " << *iter << std::endl;
+			continue;
+		}
+
+		// special case for PLACE, needs to have co-ordinates & direction after it
+		if (command == DataTypes::Command::Place)
+		{
+			if(iter != commandLineArgs.end() - 1)
+			{
+				// should be X, Y, [NORTH | EAST | SOUTH | WEST]
+				std::string nextCommand = *(++iter);
+				auto placeData = CreatePlaceData(nextCommand);
+				if (placeData)
+				{
+					_placeDataQueue.push(placeData);
+				}
+				else
+				{
+					std::cerr << "Error - Invalid place data: " << nextCommand << std::endl;
+					return false;
+				}
+
+				// only push PLACE if we have valid "place data" i.e. co-ordinates & direction
+				_commandQueue.push(command);
+			}
+		}
+		else
+		{
+			// all other commands push without other args
+			_commandQueue.push(command);
 		}
 	}
 
