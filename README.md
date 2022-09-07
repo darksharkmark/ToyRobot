@@ -1,6 +1,11 @@
 # ToyRobot
 The application is a simulation of a toy robot moving on a square table top, of dimensions 5 units x 5 units. 
 gtest 
+
+## Dependencies
+- GTest https://github.com/google/googletest
+- GoogleTestAdapter https://github.com/csoltenborn/GoogleTestAdapter
+
 ## Building the Application
 - Visual Studio 2019, run ToyRobot Project
 
