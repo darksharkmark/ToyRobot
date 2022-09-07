@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ToyRobot", "ToyRobot\ToyRobot.vcxproj", "{265104BA-8AA1-4419-A639-2F2A67CF4310}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ToyRobotTests", "ToyRobotTests\ToyRobotTests.vcxproj", "{09604674-10B9-4CE2-86F6-3A8D618760F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{265104BA-8AA1-4419-A639-2F2A67CF4310}.Release|x64.Build.0 = Release|x64
 		{265104BA-8AA1-4419-A639-2F2A67CF4310}.Release|x86.ActiveCfg = Release|Win32
 		{265104BA-8AA1-4419-A639-2F2A67CF4310}.Release|x86.Build.0 = Release|Win32
+		{09604674-10B9-4CE2-86F6-3A8D618760F1}.Debug|x64.ActiveCfg = Debug|x64
+		{09604674-10B9-4CE2-86F6-3A8D618760F1}.Debug|x64.Build.0 = Debug|x64
+		{09604674-10B9-4CE2-86F6-3A8D618760F1}.Debug|x86.ActiveCfg = Debug|Win32
+		{09604674-10B9-4CE2-86F6-3A8D618760F1}.Debug|x86.Build.0 = Debug|Win32
+		{09604674-10B9-4CE2-86F6-3A8D618760F1}.Release|x64.ActiveCfg = Release|x64
+		{09604674-10B9-4CE2-86F6-3A8D618760F1}.Release|x64.Build.0 = Release|x64
+		{09604674-10B9-4CE2-86F6-3A8D618760F1}.Release|x86.ActiveCfg = Release|Win32
+		{09604674-10B9-4CE2-86F6-3A8D618760F1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

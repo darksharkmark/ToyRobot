@@ -136,7 +136,7 @@ std::shared_ptr<DataTypes::PlaceData> Robot::CreatePlaceData(const std::string& 
 	return std::make_shared<DataTypes::PlaceData>(DataTypes::PlaceData{ x, y, direction });
 }
 
-const std::string& Robot::GetDirectionAsString(DataTypes::Direction direction) const
+const std::string Robot::GetDirectionAsString(DataTypes::Direction direction) const
 {
 	for (auto it = _directionMap.begin(); it != _directionMap.end(); ++it)
 	{
@@ -147,7 +147,7 @@ const std::string& Robot::GetDirectionAsString(DataTypes::Direction direction) c
 	}
 
 	std::cerr << "Error - could not convert direction to string: " << static_cast<int>(direction) << std::endl;
-	return "";
+	return {};
 }
 
 // Command handlers

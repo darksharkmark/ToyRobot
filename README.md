@@ -1,14 +1,19 @@
 # ToyRobot
 The application is a simulation of a toy robot moving on a square table top, of dimensions 5 units x 5 units. 
-
+gtest 
 ## Building the Application
-Visual Studio 2019
+- Visual Studio 2019, run ToyRobot Project
 
 ## Usage
-- Input is processed via command line e.g.
-  - ./ToyRobot.exe PLACE 1,2,NORTH 
+- Input is processed via command line in order e.g.
+  - ./ToyRobot.exe PLACE 0,0,NORTH 
   - ./ToyRobot.exe PLACE 3,4,EAST MOVE REPORT
  
+## Tests
+- using Gtest Framework
+- There is a specific Post Build step in the Main project to build the executable as a library, then we can link that library against our Test project
+  - ToyRobot Project > Properties > Configuration Properties > Build Events > Post Build Event > Command Line
+    - lib /NOLOGO /OUT:"$(OutDir)$(TargetName).lib"
 
 ## Coding Methodolgies
 - Early Return pattern
@@ -17,5 +22,4 @@ Visual Studio 2019
 - Focusing on code readability over effeciency
 - makes use of the std library where appropriate
 
-## Tests
-using Gtest Framework
+

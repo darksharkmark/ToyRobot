@@ -51,10 +51,12 @@ using CommandQueue = std::queue<DataTypes::Command>;
 using PlaceDataQueue = std::queue<std::shared_ptr<DataTypes::PlaceData>>;
 using CommandMap = const std::unordered_map<std::string, DataTypes::Command>;
 using DirectionMap = const std::unordered_map<std::string, DataTypes::Direction>;
-using Coorindates = std::pair<int, int>;
+using Coordinates = std::pair<int, int>;
 
 class Robot
 {
+	friend class ToyRobotTests;
+
 public:
 	bool Initialise(const std::vector<std::string>& commandLineArgs);
 	void ProcessCommands();
@@ -62,7 +64,7 @@ public:
 private:
 // helpers
 	std::shared_ptr<DataTypes::PlaceData> CreatePlaceData(const std::string& input);
-	const std::string& GetDirectionAsString(DataTypes::Direction direction) const;
+	const std::string GetDirectionAsString(DataTypes::Direction direction) const;
 	const bool ValidateMove(int position) const;
 
 // Command handlers
@@ -92,7 +94,7 @@ private:
 	};
 
 // state
-	Coorindates _currentPosition { 0,0 };
+	Coordinates _currentPosition { 0,0 };
 	DataTypes::Direction _currentDirection { DataTypes::Direction::INVALID };
 	bool isPlaced;
 };
