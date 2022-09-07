@@ -4,7 +4,8 @@ gtest
 
 ## Dependencies
 - GTest https://github.com/google/googletest
-- GoogleTestAdapter https://github.com/csoltenborn/GoogleTestAdapter
+- GoogleTestAdapter Visual studio extension https://github.com/csoltenborn/GoogleTestAdapter
+  - [see usage here](https://github.com/csoltenborn/GoogleTestAdapter#usage)
 
 ## Building the Application
 - Visual Studio 2019, run ToyRobot Project
