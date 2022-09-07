@@ -105,6 +105,11 @@ void Robot::ProcessCommands()
 	}
 }
 
+State Robot::GetState()
+{
+	return State{ _currentPosition, _currentDirection, isPlaced };
+}
+
 std::shared_ptr<DataTypes::PlaceData> Robot::CreatePlaceData(const std::string& input)
 {
 	// must be at 8 or 9 chars, single digit co-ordindates + commas + EAST/WEST | NORTH/SOUTH
@@ -193,7 +198,7 @@ void Robot::DoMove()
 		}
 		case DataTypes::Direction::West:
 		{
-			const int newPosition = _currentPosition.first + 1;
+			const int newPosition = _currentPosition.first - 1;
 			if (ValidateMove(newPosition))
 			{
 				_currentPosition.first =  newPosition;
@@ -211,7 +216,7 @@ void Robot::DoMove()
 		}
 		case DataTypes::Direction::East:
 		{
-			const int newPosition = _currentPosition.first - 1;
+			const int newPosition = _currentPosition.first + 1;
 			if (ValidateMove(newPosition))
 			{
 				_currentPosition.first = newPosition;

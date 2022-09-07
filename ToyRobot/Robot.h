@@ -34,15 +34,6 @@ namespace DataTypes
 	};
 }
 
-/*
-*	To help visualise
-* 
-	{{0,4}, {1,4}, {2,4}, {3,4}, {4,4}},
-	{{0,3}, {1,3}, {2,3}, {3,3}, {4,3}},
-	{{0,2}, {1,2}, {2,2}, {3,2}, {4,2}},
-	{{0,1}, {1,1}, {2,1}, {3,1}, {4,1}},
-	{{0,0}, {1,0}, {2,0}, {3,0}, {4,0}},
-*/
 // constants
 const int gridSize = 5;
 
@@ -53,14 +44,18 @@ using CommandMap = const std::unordered_map<std::string, DataTypes::Command>;
 using DirectionMap = const std::unordered_map<std::string, DataTypes::Direction>;
 using Coordinates = std::pair<int, int>;
 
+struct State {
+	Coordinates currentPosition;
+	DataTypes::Direction currentDirection;
+	bool isPlaced;
+};
+
 class Robot
 {
-	friend class ToyRobotTests;
-
 public:
 	bool Initialise(const std::vector<std::string>& commandLineArgs);
 	void ProcessCommands();
-
+	State GetState(); // mainly used for debug help and testing
 private:
 // helpers
 	std::shared_ptr<DataTypes::PlaceData> CreatePlaceData(const std::string& input);
@@ -96,6 +91,6 @@ private:
 // state
 	Coordinates _currentPosition { 0,0 };
 	DataTypes::Direction _currentDirection { DataTypes::Direction::INVALID };
-	bool isPlaced;
+	bool isPlaced{ false };
 };
 
