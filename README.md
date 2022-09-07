@@ -28,4 +28,5 @@ gtest
 - Focusing on code readability over effeciency
 - makes use of the std library where appropriate
 
-
+## Known Issues
+- Release x64 will not build
