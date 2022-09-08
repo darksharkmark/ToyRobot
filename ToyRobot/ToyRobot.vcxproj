@@ -147,7 +147,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>lib /NOLOGO /OUT:"$(OutDir)$(TargetName).lib" "$(ProjectDir)\$(Configuration)\*.obj"</Command>
+      <Command>lib /NOLOGO /OUT:"$(OutDir)$(TargetName).lib" "$(ProjectDir)\x64\$(Configuration)\*.obj"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

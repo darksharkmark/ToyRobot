@@ -32,5 +32,4 @@ gtest
 - State can stored as a file or other means if necesarry
 
 ## Known Issues
-- Release x64 will not build
 - Some tests are failing, I have left them in as talking points about the program
